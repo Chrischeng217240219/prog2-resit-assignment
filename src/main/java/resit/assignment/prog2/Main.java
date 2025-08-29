@@ -3,7 +3,6 @@ package resit.assignment.prog2;
 import java.io.*;
 import java.util.*;
 
-// Student类
 class Student {
     private String studentID;
     private String studentName;
@@ -23,8 +22,6 @@ class Student {
         this.yearOfAdmission = yearOfAdmission;
         this.yearOfGraduation = yearOfGraduation;
     }
-
-    // Getters and Setters
     public String getStudentID() { return studentID; }
     public void setStudentID(String studentID) { this.studentID = studentID; }
     
@@ -74,7 +71,6 @@ class StudentCollection {
     public void addStudents(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
-            // Skip header
             br.readLine();
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
@@ -144,7 +140,7 @@ class StudentOperation {
         char gender = scanner.next().charAt(0);
         System.out.println("Enter grade (1-5):");
         int grade = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+        scanner.nextLine();
         System.out.println("Enter year of admission:");
         String yearOfAdmission = scanner.nextLine();
         System.out.println("Enter year of graduation:");
@@ -197,7 +193,7 @@ class StudentOperation {
                 }
 
                 System.out.println("Enter new gender (M/F, or press enter to skip):");
-                scanner.nextLine(); // Consume newline
+                scanner.nextLine();
                 String genderInput = scanner.nextLine();
                 if (!genderInput.isEmpty()) {
                     student.setGender(genderInput.charAt(0));
@@ -208,7 +204,7 @@ class StudentOperation {
                 if (newGrade != 0) {
                     student.setGrade(newGrade);
                 }
-                scanner.nextLine(); // Consume newline
+                scanner.nextLine();
 
                 System.out.println("Enter new year of admission (or press enter to skip):");
                 String newAdmission = scanner.nextLine();
@@ -266,7 +262,6 @@ class StudentOperation {
     }
 }
 
-// Graduates类
 class Graduates {
     public void printGraduates(ArrayList<Student> students) {
         try (FileWriter fw = new FileWriter("GraduateStudents.txt");
@@ -277,10 +272,9 @@ class Graduates {
             bw.write("|------------|-----------------|-------|--------|-------------------|--------------------|\n");
             
             for (Student student : students) {
-                // 检查年份是否有效且小于等于当前年份
                 try {
                     int gradYear = Integer.parseInt(student.getYearOfGraduation());
-                    if (gradYear <= 2024) { // 假设当前年份是2024
+                    if (gradYear <= 2025) {
                         bw.write(String.format("| %-10s | %-15s | %-5d | %-6c | %-17s | %-18s |\n",
                                 student.getStudentID(),
                                 student.getStudentName(),
@@ -290,7 +284,6 @@ class Graduates {
                                 student.getYearOfGraduation()));
                     }
                 } catch (NumberFormatException e) {
-                    // 如果年份格式无效，跳过该学生
                     System.out.println("Invalid graduation year for student: " + student.getStudentID());
                 }
             }
@@ -301,11 +294,9 @@ class Graduates {
     }
 }
 
-// Main类
 public class Main {
     public static void main(String[] args) {
         StudentCollection studentCollection = new StudentCollection();
-        // 检查文件是否存在
         File file = new File("StudentDetails.csv");
         if (file.exists()) {
             studentCollection.addStudents("StudentDetails.csv");
@@ -330,7 +321,7 @@ public class Main {
             
             try {
                 choice = scanner.nextInt();
-                scanner.nextLine(); // Consume newline
+                scanner.nextLine();
                 
                 switch (choice) {
                     case 1:
@@ -359,7 +350,7 @@ public class Main {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Please enter a valid number.");
-                scanner.nextLine(); // Clear invalid input
+                scanner.nextLine();
                 choice = 0;
             }
         } while (choice != 7);
